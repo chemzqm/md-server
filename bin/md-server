@@ -1,0 +1,84 @@
+#!/usr/bin/env node
+
+var connect = require('connect');
+var exec = require('child_process').exec;
+var Server = require('tiny-lr').Server;
+var http = require('http');
+var path = require('path');
+var marked = require('color-marked');
+var fs = require('fs');
+var port = 9300;
+var file = process.argv[2];
+
+if(!fs.existsSync(file)){
+  throw new Error(file + ' not exist!');
+}
+function getSnippet () {
+  /*jshint quotmark:false */
+  var snippet = [
+      "<!-- livereload snippet -->",
+      "<script>document.write('<script src=\"http://'",
+      " + (location.host || 'localhost').split(':')[0]",
+      " + ':" + port + "/livereload.js?snipver=1\"><\\/script>')",
+      "</script>",
+      ""
+      ].join('\n');
+  return snippet;
+}
+function buffer(fn, ms){
+  var timer;
+  return function() {
+    var args = arguments;
+    if(timer){
+      clearTimeout(timer);
+    }
+    timer = setTimeout(function() {
+      fn.apply(null, args);
+    }, ms);
+  }
+}
+
+var app = connect();
+app.use(connect.query())
+.use(connect.bodyParser())
+.use((function() {
+  var srv = new Server({ app:app, port:port });
+  fs.watch(file, buffer(function(e, filename){
+    srv.changed({
+      body:{
+        files:filename
+      }
+    })
+  },100));
+  return function(req, res, next) {
+    srv.handler(req, res, next);
+  }
+})())
+.use(connect.static(path.resolve('./')))
+.use(function(req, res, next) {
+    if(req.url === '/md'){
+      fs.readFile(file, 'utf-8',function(err, text) {
+        if(err){ throw err; }
+        var html = marked(text);
+        if(err){ throw err; }
+        fs.readFile(path.resolve(__dirname, '../template.html'),'utf-8', function(err, content) {
+          if(err){ throw err; }
+          res.writeHead(200, {
+            'Content-type': 'text/html',
+            'Cache-Control': 'public, max-age=0'
+          });
+          var out = content.replace(/\$\{content\}/, html).replace(/<\/body>/, function(w) {
+            return getSnippet() + w;
+          })
+          res.end(out);
+        })
+      });
+    }else{
+      next();
+    }
+})
+.listen(port, function() {
+  console.log("server listening on port " + port);
+});
+
+exec('google-chrome http://localhost:' + port + '/md');
