@@ -60,7 +60,6 @@ app.use(connect.query())
       fs.readFile(file, 'utf-8',function(err, text) {
         if(err){ throw err; }
         var html = marked(text);
-        if(err){ throw err; }
         fs.readFile(path.resolve(__dirname, '../template.html'),'utf-8', function(err, content) {
           if(err){ throw err; }
           res.writeHead(200, {
