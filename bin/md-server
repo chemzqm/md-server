@@ -43,12 +43,14 @@ app.use(connect.query())
 .use(connect.bodyParser())
 .use((function() {
   var srv = new Server({ app:app, port:port });
-  fs.watch(file, buffer(function(e, filename){
-    srv.changed({
-      body:{
-        files:filename
-      }
-    })
+  fs.watch(path.dirname(file), buffer(function(e, filename){
+    if (path.basename(file) === filename) {
+      srv.changed({
+        body:{
+          files:filename
+        }
+      });
+    }
   },100));
   return function(req, res, next) {
     srv.handler(req, res, next);
@@ -63,7 +65,7 @@ app.use(connect.query())
         fs.readFile(path.resolve(__dirname, '../template.html'),'utf-8', function(err, content) {
           if(err){ throw err; }
           res.writeHead(200, {
-            'Content-type': 'text/html',
+            'Content-type': 'text/html; charset=utf-8',
             'Cache-Control': 'public, max-age=0'
           });
           var out = content.replace(/\$\{content\}/, html).replace(/<\/body>/, function(w) {
@@ -80,4 +82,4 @@ app.use(connect.query())
   console.log("server listening on port " + port);
 });
 
-exec('google-chrome http://localhost:' + port + '/md');
+exec('open http://localhost:' + port + '/md');
