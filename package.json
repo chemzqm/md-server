@@ -2,7 +2,7 @@
   "name": "md-server",
   "description": "A constant markdown file parsing, watching and reload server.",
   "author": "Qiming Zhao",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "bin": "./bin/md-server",
   "repository": "git@github.com:chemzqm/md-server.git",
   "homepage": "https://github.com/chemzqm/md-server",
