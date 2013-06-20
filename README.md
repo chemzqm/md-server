@@ -1,6 +1,8 @@
 #md-server
 
 A constant markdown file parsing, watching and reload server.
+It's super easy to use, it would reload your browser when you save the markdown file.
+Any [issue](https://github.com/chemzqm/md-server/issues) is welcome!
 
 #Features
 
@@ -9,6 +11,8 @@ A constant markdown file parsing, watching and reload server.
 * **syntax highlight** using [color-marked](https://github.com/chemzqm/marked) the css style is the same as github
 
 ##Install
+
+Your have to install [node.js](http://nodejs.org/download/) at first.
 
 ``` sh
 $ npm install -g md-server
@@ -19,4 +23,4 @@ $ npm install -g md-server
 ``` sh
 $ md-server READE.md
 ```
-
+open your browser with url <http://localhost:9300/md>
