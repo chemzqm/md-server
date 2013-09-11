@@ -12,7 +12,7 @@
   "dependencies": {
     "connect": "~2.7.6",
     "tiny-lr": "~0.0.4",
-    "color-marked": "~0.3.0"
+    "color-marked": "~0.3.3"
   },
   "keywords": [
     "markdown",

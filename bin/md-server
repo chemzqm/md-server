@@ -61,7 +61,9 @@ app.use(connect.query())
     if(req.url === '/md'){
       fs.readFile(file, 'utf-8',function(err, text) {
         if(err){ throw err; }
-        var html = marked(text);
+        var html = marked(text, {
+          color: true
+        });
         fs.readFile(path.resolve(__dirname, '../template.html'),'utf-8', function(err, content) {
           if(err){ throw err; }
           res.writeHead(200, {
