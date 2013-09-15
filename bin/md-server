@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 var connect = require('connect');
-var exec = require('child_process').exec;
+var open = require('open');
 var Server = require('tiny-lr').Server;
 var http = require('http');
 var path = require('path');
@@ -84,6 +84,7 @@ app.use(connect.query())
 })
 .listen(port, function() {
   console.log("server listening on port " + port);
-  exec('open http://localhost:' + port + '/md');
 });
+
+open('http://localhost:' + port + '/md');
 
