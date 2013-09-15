@@ -1,7 +1,9 @@
 #md-server
 
+Edit your file with your favourite editor and get the result in the browser when you save the file.
+
 A constant markdown file parsing, watching and reload server.
-It's super easy to use, it would reload your browser when you save the markdown file.
+It's super easy to use, it could reload your browser when you save the markdown file.
 Any [issue](https://github.com/chemzqm/md-server/issues) is welcome!
 
 #Features
