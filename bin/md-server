@@ -13,6 +13,7 @@ var file = process.argv[2];
 if(!fs.existsSync(file)){
   throw new Error(file + ' not exist!');
 }
+
 function getSnippet () {
   /*jshint quotmark:false */
   var snippet = [
@@ -43,14 +44,15 @@ app.use(connect.query())
 .use(connect.bodyParser())
 .use((function() {
   var srv = new Server({ app:app, port:port });
-  fs.watch(path.dirname(file), buffer(function(e, filename){
-    if (path.basename(file) === filename) {
-      srv.changed({
-        body:{
-          files:filename
-        }
-      });
-    }
+  fs.watchFile(file, {
+      persistent: true ,
+      interval: 200
+    },buffer(function(curr, prev){
+    srv.changed({
+      body:{
+        files: file
+      }
+    });
   },100));
   return function(req, res, next) {
     srv.handler(req, res, next);
@@ -82,6 +84,6 @@ app.use(connect.query())
 })
 .listen(port, function() {
   console.log("server listening on port " + port);
+  exec('open http://localhost:' + port + '/md');
 });
 
-exec('open http://localhost:' + port + '/md');
