@@ -4,6 +4,7 @@
   "author": "Qiming Zhao",
   "version": "0.0.3",
   "bin": "./bin/md-server",
+  "global": true,
   "repository": "git@github.com:chemzqm/md-server.git",
   "homepage": "https://github.com/chemzqm/md-server",
   "bugs": {
