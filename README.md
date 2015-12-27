@@ -23,6 +23,6 @@ $ npm install -g md-server
 ##Usage
 
 ``` sh
-$ md-server READE.md
+$ md-server README.md
 ```
 open your browser with url <http://localhost:9300/md>
